@@ -6,7 +6,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
-from openai import OpenAI  # Make sure this is installed and working
+from openai import OpenAI
 
 SYSTEM_PROMPT = """
 You are the Infrax Assistant. Infrax is a company that provides access to a wide range of state of the art generative ai models.
