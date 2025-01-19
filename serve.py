@@ -98,7 +98,7 @@ async def chat_interface(request: Request):
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Infrax Assistant Chat</title>
+        <title>Ask Infrax</title>
         <style>
           body {
             background-color: #000;
@@ -112,21 +112,28 @@ async def chat_interface(request: Request):
             font-family: sans-serif;
             position: relative;
           }
-          #avatar-container {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-          }
-          #avatar {
-            border-radius: 50%;
-            transition: transform 0.3s;
-          }
           #chat-container {
             width: 60%;
             max-width: 600px;
             border: 1px solid #fff;
             padding: 1em;
             border-radius: 5px;
+            position: relative;
+          }
+          #avatar-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1em;
+          }
+          #avatar {
+            border-radius: 50%;
+            width: 100px;
+            animation: float 3s ease-in-out infinite;
+          }
+          @keyframes float {
+            0% { transform: translatey(0px); }
+            50% { transform: translatey(-10px); }
+            100% { transform: translatey(0px); }
           }
           #messages {
             height: 300px;
@@ -159,17 +166,14 @@ async def chat_interface(request: Request):
           a {
             color: #ffb851; /* Link color */
           }
-          .animate {
-            transform: scale(1.1);
-          }
         </style>
       </head>
       <body>
-        <div id="avatar-container">
-          <img id="avatar" src="/static/assets/neutral.png" alt="Avatar" width="100" />
-        </div>
         <div id="chat-container">
-          <h2 style="text-align:center;">Infrax Assistant Chat</h2>
+          <div id="avatar-container">
+            <img id="avatar" src="/static/assets/neutral.png" alt="Avatar" />
+          </div>
+          <h2 style="text-align:center;">Ask Infrax</h2>
           <div id="messages"></div>
           <form id="input-form" onsubmit="sendMessage(event)">
             <input type="text" id="user-message" placeholder="Type here..." />
@@ -190,7 +194,7 @@ async def chat_interface(request: Request):
           function parseMarkdownLinks(text) {
             // Basic regex to transform [label](url) into <a> tags
             return text.replace(
-              /\[([^\]]+)\]\(([^)]+)\)/g,
+              /\\[([^\\]]+)\\]\\(([^)]+)\\)/g,
               '<a href="$2" target="_blank">$1</a>'
             );
           }
@@ -249,12 +253,6 @@ async def chat_interface(request: Request):
             const avatar = document.getElementById("avatar");
             const imageName = moodToImage[mood] || "neutral.png";
             avatar.src = `/static/assets/${imageName}`;
-
-            // Add animation
-            avatar.classList.add("animate");
-            setTimeout(() => {
-              avatar.classList.remove("animate");
-            }, 300);
           }
         </script>
       </body>
